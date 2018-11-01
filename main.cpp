@@ -17,7 +17,20 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+
 using namespace std;
+
+
+const int ZERO_INT_VALUE = '0';
+
+/**
+ * convertit un char en int
+ * @param  c [char a convertir]
+ * @return   [char convertit]
+ */
+int charToInt(char c) {
+  return (int)c - ZERO_INT_VALUE;
+}
 
 /**
  Addition
@@ -34,7 +47,6 @@ string add(string lhs, string rhs) {
 
   return resultat;
 }
-
 
 /**
  Multiplication
