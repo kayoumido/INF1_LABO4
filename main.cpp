@@ -151,7 +151,7 @@ string subtract(string lhs, string rhs) {
     negative = true;
   }
 
-  if (lhs.length() == rhs.length()) {
+  if (lhs.length() == rhs.length() and charToInt(lhs[0]) < charToInt(rhs[0])) {
     for (int i = (int)lhs.length() - 1; i >= 0; --i) {
       if (charToInt(lhs[i]) < charToInt(rhs[i])) {
         string tmp = lhs;
