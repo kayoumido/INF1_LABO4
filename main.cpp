@@ -20,16 +20,24 @@
 
 using namespace std;
 
-
 const int ZERO_INT_VALUE = '0';
 
 /**
  * convertit un char en int
  * @param  c [char a convertir]
- * @return   [char convertit]
+ * @return   [int convertit]
  */
 int charToInt(char c) {
   return (int)c - ZERO_INT_VALUE;
+}
+
+/**
+ * convertit un int en char
+ * @param  c [int a convertir]
+ * @return   [char convertit]
+ */
+char intToChar(int value) {
+  return (char)(value + ZERO_INT_VALUE);
 }
 
 /**
@@ -49,6 +57,18 @@ string add(string lhs, string rhs) {
 }
 
 /**
+ * Vérifie si le nombre produit un carry et met à jour les valeurs
+ * @param value
+ * @param carryContainer
+ */
+void checkForCarry(int& value, int& carryContainer) {
+  if(value >= 10) {
+    carryContainer = value / 10;
+    value -= carryContainer * 10;
+  }
+}
+
+/**
  Multiplication
 
  @param lhs entier >=0 représenté en notation décimale
@@ -60,7 +80,39 @@ string multiply(string lhs, string rhs) {
   string resultat;
 
   // A COMPLETER
-
+  int carry = 0;
+  int multiplicationDigit = 0;
+  string multiplication;
+  string zeros;
+  
+  //Parcourir premier nombre
+  for(int i = lhs.length() - 1; i >= 0; --i) {
+    int i1Digit = charToInt(lhs[i]);
+    carry = 0;
+    multiplication = zeros;
+    
+    //Parcourir deuxième nombre et multiplier chaque digit
+    for(int j = rhs.length() - 1; j >= 0; --j) {
+      int i2Digit = charToInt(rhs[j]);
+            
+      multiplicationDigit = (i1Digit * i2Digit) + carry;
+      checkForCarry(multiplicationDigit, carry);
+      
+      multiplication = intToChar(multiplicationDigit) + multiplication;
+    }
+    
+    //Ajouter le dernier carry s'il y en a un
+    if(carry != 0) {
+      multiplication = intToChar(carry) + multiplication;    
+    }
+    
+    zeros += "0"; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire 
+    
+    //PEUT RESORTIR DES 0 / 00 / 000 / ...
+    //resultat = add(resultat, multiplication);    
+    resultat += multiplication + (i > 0 ? " + " : ""); //TEST
+  }
+  
   return resultat;
 }
 
