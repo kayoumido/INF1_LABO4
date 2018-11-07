@@ -27,28 +27,32 @@ const short CARRY_LIMIT = 10;
 const short WORKING_BASE = 10;
 
 /**
- * [convertit un entier en char]
- * @param  x [entier a convertir]
- * @return   [entier converti]
+ * Convertit un entier en char
+ * @param x entier à convertir
+ * 
+ * @return entier converti
  */
 char integerToChar(int x) {
-  return (char)x + ZERO_INT_VALUE;
+  return (char) x + ZERO_INT_VALUE;
 }
 
 /**
- convertit un char en entier
- @param  c [char a convertir]
- @return   [entier convertit]
+ * Convertit un char en entier
+ * @param c char à convertir
+ * 
+ * @return entier converti
  */
 short charToInteger(char c) {
-  return (short)c - ZERO_INT_VALUE;
+  return (short) c - ZERO_INT_VALUE;
 }
 
 /**
- * [rallonge la string la plus courte a la meme longueur que l'autre]
- * @param  s1 [string de la plus grande longueur]
- * @param  s2 [string a rallonger]
- * @return    [retourne la string de la meme longueur que la premiere]
+ * Rallonge la string la plus courte à la même longueur
+ * que l'autreen y ajoutant des zéros
+ * @param s1 string de la plus grande longueur
+ * @param s2 string a rallonger
+ * 
+ * @return la string de la meme longueur que la premiere
  */
 string equaliseLength(string s1, string s2) {
   unsigned long long difference = s1.length() - s2.length();
@@ -59,12 +63,12 @@ string equaliseLength(string s1, string s2) {
 }
 
 /**
- Vérifie si le nombre produit un carry et met à jour les valeurs
- @param value
- @param carryContainer
+ * Vérifie si le nombre produit un carry et met à jour les valeurs
+ * @param value
+ * @param carryContainer
  */
 void checkForCarry(short& value, short& carryContainer) {
-  if(value >= CARRY_LIMIT) {
+  if (value >= CARRY_LIMIT) {
     carryContainer = value / CARRY_LIMIT;
     value -= carryContainer * CARRY_LIMIT;
   } else {
@@ -73,7 +77,7 @@ void checkForCarry(short& value, short& carryContainer) {
 }
 
 /**
- * [swap deux nombres]
+ * Intervertit deux variables string
  * @param s1
  * @param s2
  */
@@ -83,14 +87,13 @@ void swap(string& s1, string& s2) {
   s2 = tmp;
 }
 
-
 /**
- Addition
-
- @param lhs entier >=0 représenté en notation décimale
- @param rhs entier >=0 représenté en notation décimale
-
- @return somme des 2 entiers représentée en notation décimale
+ * Addition
+ * 
+ * @param lhs entier >=0 représenté en notation décimale
+ * @param rhs entier >=0 représenté en notation décimale
+ * 
+ * @return somme des 2 entiers représentée en notation décimale
  */
 string add(string lhs, string rhs) {
   string resultat;
@@ -104,10 +107,9 @@ string add(string lhs, string rhs) {
   rhs = ZERO + rhs;
 
   if (lhs.length() > rhs.length()) {
-    rhs = equaliseLength(lhs,rhs);
-  }
-  else if (rhs.length() > lhs.length()) {
-    lhs = equaliseLength(rhs,lhs);
+    rhs = equaliseLength(lhs, rhs);
+  } else if (rhs.length() > lhs.length()) {
+    lhs = equaliseLength(rhs, lhs);
   }
 
   for (int i = lhs.length() - 1; i >= 0; i--) {
@@ -116,8 +118,7 @@ string add(string lhs, string rhs) {
 
     if (i == 0 and carry == 0) {
       continue;
-    }
-    else {
+    } else {
       total = n1 + n2 + carry;
     }
     checkForCarry(total, carry);
@@ -125,16 +126,16 @@ string add(string lhs, string rhs) {
     resultat = intermediateResult + resultat;
   }
 
-    return resultat;
+  return resultat;
 }
 
 /**
- Multiplication
-
- @param lhs entier >=0 représenté en notation décimale
- @param rhs entier >=0 représenté en notation décimale
-
- @return produit des 2 entiers représenté en notation décimale
+ * Multiplication
+ * 
+ * @param lhs entier >=0 représenté en notation décimale
+ * @param rhs entier >=0 représenté en notation décimale
+ * 
+ * @return produit des 2 entiers représenté en notation décimale
  */
 string multiply(string lhs, string rhs) {
   string resultat;
@@ -147,13 +148,13 @@ string multiply(string lhs, string rhs) {
   string zeros;
 
   //Parcourir premier nombre
-  for(int i = lhs.length() - 1; i >= 0; --i) {
+  for (int i = lhs.length() - 1; i >= 0; --i) {
     i1Digit = charToInteger(lhs[i]);
     carry = 0;
     multiplication = zeros;
 
     //Parcourir deuxième nombre et multiplier chaque digit
-    for(int j = rhs.length() - 1; j >= 0; --j) {
+    for (int j = rhs.length() - 1; j >= 0; --j) {
       i2Digit = charToInteger(rhs[j]);
 
       multiplicationDigit = (i1Digit * i2Digit) + carry;
@@ -163,7 +164,7 @@ string multiply(string lhs, string rhs) {
     }
 
     //Ajouter le dernier carry s'il y en a un
-    if(carry != 0) {
+    if (carry != 0) {
       multiplication = integerToChar(carry) + multiplication;
     }
 
@@ -174,14 +175,14 @@ string multiply(string lhs, string rhs) {
   return resultat;
 }
 
-/**
- Factorielle
-
- @param n entier >=0
-
- @return n!, la factorielle de n représentée en notation décimale
- */
 string subtract(string, string);
+
+/**
+ * Convertit une string en int
+ * @param toConvert
+ * 
+ * @return le string convertit
+ */
 string integerToString(int toConvert) {
   string converted;
   while (toConvert > 0) {
@@ -190,28 +191,35 @@ string integerToString(int toConvert) {
   }
   return converted;
 }
+
+/**
+ * Factorielle
+ * 
+ * @param n entier >=0
+ * 
+ * @return n! la factorielle de n représentée en notation décimale
+ */
 string factorial(int n) {
   string resultat = "1";
 
-  // A COMPLETER
   string value = integerToString(n);
   string multiplier = "0";
 
-  while(multiplier != value) {
+  while (multiplier != value) {
     multiplier = add(multiplier, "1");
     resultat = multiply(multiplier, resultat);
   }
-  
+
   return resultat;
 }
 
 /**
- Soustraction
- 
- @param lhs entier >=0 représenté en notation décimale
- @param rhs entier >=0 représenté en notation décimale
-
- @return différence (lhs - rhs) des 2 entiers représentée en notation décimale
+ * Soustraction
+ * 
+ * @param lhs entier >=0 représenté en notation décimale
+ * @param rhs entier >=0 représenté en notation décimale
+ * 
+ * @return différence (lhs - rhs) des 2 entiers représentée en notation décimale
  */
 string subtract(string lhs, string rhs) {
   string resultat;
@@ -219,21 +227,21 @@ string subtract(string lhs, string rhs) {
 
   // check if left hand side value is smaller than the right one
   if (lhs.length() < rhs.length()) {
-    swap(lhs,rhs);
+    swap(lhs, rhs);
     negative = true;
   }
 
   if (lhs.length() == rhs.length() and charToInteger(lhs[0]) < charToInteger(rhs[0])) {
-    for (int i = (int)lhs.length() - 1; i >= 0; --i) {
+    for (int i = (int) lhs.length() - 1; i >= 0; --i) {
       if (charToInteger(lhs[i]) < charToInteger(rhs[i])) {
-        swap(lhs,rhs);
+        swap(lhs, rhs);
         negative = true;
         break;
       }
     }
   }
 
-  int sizeDifference = (int)lhs.length() - (int)rhs.length();
+  int sizeDifference = (int) lhs.length() - (int) rhs.length();
 
   // add 0 at the beginning of the rhs
   // so we have two numbers with the same length
@@ -249,12 +257,12 @@ string subtract(string lhs, string rhs) {
         difference += 10;
     N3.digit[i] = difference;
    */
-  int lhsLength = (int)lhs.length();
+  int lhsLength = (int) lhs.length();
   for (int i = lhsLength - 1; i >= 0; --i) {
     short difference = charToInteger(lhs[i]) - charToInteger(rhs[i]);
 
     if (difference < 0) {
-      lhs[i - 1] = integerToChar( charToInteger(lhs[i - 1]) - 1 );
+      lhs[i - 1] = integerToChar(charToInteger(lhs[i - 1]) - 1);
       difference += CARRY_LIMIT;
     }
 
@@ -268,14 +276,13 @@ string subtract(string lhs, string rhs) {
   return resultat;
 }
 
-
 /**
- Fonction principale
-
- @return Mise en oeuvre d'opérations arithmétiques simples
- (+,-,*) sur des entiers positifs longs représentés
- sous forme de chaines de caractères en notation
- décimale
+ * Fonction principale
+ * 
+ * @return Mise en oeuvre d'opérations arithmétiques simples
+ * (+,-,*) sur des entiers positifs longs représentés
+ * sous forme de chaines de caractères en notation
+ * décimale
  */
 int main() {
 
@@ -283,9 +290,9 @@ int main() {
   string i1, i2;
   cin >> i1 >> i2;
 
-  cout << i1 << " + " << i2 << " = " << add(i1,i2) << endl;
-  cout << i1 << " * " << i2 << " = " << multiply(i1,i2) << endl;
-  cout << i1 << " - " << i2 << " = " << subtract(i1,i2) << endl;
+  cout << i1 << " + " << i2 << " = " << add(i1, i2) << endl;
+  cout << i1 << " * " << i2 << " = " << multiply(i1, i2) << endl;
+  cout << i1 << " - " << i2 << " = " << subtract(i1, i2) << endl;
 
   cout << "\nEntrez un entier >= 0 \n";
   int i3;
