@@ -117,6 +117,8 @@ string multiply(string lhs, string rhs) {
   string resultat;
 
   // A COMPLETER
+  int i1Digit;
+  int i2Digit;
   int carry = 0;
   int multiplicationDigit = 0;
   string multiplication;
@@ -124,15 +126,16 @@ string multiply(string lhs, string rhs) {
   
   //Parcourir premier nombre
   for(int i = lhs.length() - 1; i >= 0; --i) {
-    int i1Digit = charToInt(lhs[i]);
+    i1Digit = charToInt(lhs[i]);
     carry = 0;
     multiplication = zeros;
     
     //Parcourir deuxième nombre et multiplier chaque digit
     for(int j = rhs.length() - 1; j >= 0; --j) {
-      int i2Digit = charToInt(rhs[j]);
+      i2Digit = charToInt(rhs[j]);
             
       multiplicationDigit = (i1Digit * i2Digit) + carry;
+      carry = 0;
       checkForCarry(multiplicationDigit, carry);
       
       multiplication = intToChar(multiplicationDigit) + multiplication;
@@ -143,12 +146,11 @@ string multiply(string lhs, string rhs) {
       multiplication = intToChar(carry) + multiplication;    
     }
     
-    zeros += "0"; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire 
+    zeros += "0"; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire    
+    resultat = add(resultat, multiplication);    
     
-    //PEUT RESORTIR DES 0 / 00 / 000 / ...
-    resultat = add(resultat, multiplication);
+    //cout << endl << multiplication + (i > 0 ? " + " : " = ") << endl; //TEST
     
-    //cout << multiplication + (i > 0 ? " + " : " = "); //TEST
   }
   
   return resultat;
