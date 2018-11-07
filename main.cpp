@@ -23,18 +23,18 @@ using namespace std;
 const int ZERO_INT_VALUE = '0';
 
 /**
- * convertit un char en int
- * @param  c [char a convertir]
- * @return   [int convertit]
+ convertit un char en int
+ @param  c [char a convertir]
+ @return   [int convertit]
  */
 int charToInt(char c) {
   return (int)c - ZERO_INT_VALUE;
 }
 
 /**
- * convertit un int en char
- * @param  c [int a convertir]
- * @return   [char convertit]
+ convertit un int en char
+ @param  c [int a convertir]
+ @return   [char convertit]
  */
 char intToChar(int value) {
   return (char)(value + ZERO_INT_VALUE);
@@ -42,14 +42,16 @@ char intToChar(int value) {
 
 
 /**
- * Vérifie si le nombre produit un carry et met à jour les valeurs
- * @param value
- * @param carryContainer
+ Vérifie si le nombre produit un carry et met à jour les valeurs
+ @param value
+ @param carryContainer
  */
 void checkForCarry(int& value, int& carryContainer) {
   if(value >= 10) {
     carryContainer = value / 10;
     value -= carryContainer * 10;
+  } else {  
+    carryContainer = 0;
   }
 }
 
@@ -89,7 +91,6 @@ string add(string lhs, string rhs) {
     int i2Digit = charToInt(rhs[i]);
     
     addition = i1Digit + i2Digit + carry;
-    carry = 0;
     checkForCarry(addition, carry);
     
     resultat = intToChar(addition) + resultat;
@@ -135,7 +136,6 @@ string multiply(string lhs, string rhs) {
       i2Digit = charToInt(rhs[j]);
             
       multiplicationDigit = (i1Digit * i2Digit) + carry;
-      carry = 0;
       checkForCarry(multiplicationDigit, carry);
       
       multiplication = intToChar(multiplicationDigit) + multiplication;
@@ -227,7 +227,7 @@ string subtract(string lhs, string rhs) {
       lhs[i - 1] = intToChar( charToInt(lhs[i - 1]) - 1 );
       difference += 10;
     }
-
+    if (difference == 0 and i == 0 and lhs.length() != 1) continue;
     resultat = intToChar(difference) + resultat;
   }
 
@@ -262,16 +262,3 @@ int main() {
 
   return EXIT_SUCCESS; 
 }
-
-/*
- * 100 - 120
- * 0 - 0 = 0
- * 0 - 2 = -2
- * 1 - 1 = 0
- *
- * 10 - 120
- * 0 - 0 = 0
- * 1 - 2 = 1
- * 0 - 1 = -1
- * 010
- */
