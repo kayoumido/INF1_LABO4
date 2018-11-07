@@ -180,17 +180,25 @@ string multiply(string lhs, string rhs) {
 
  @return n!, la factorielle de n représentée en notation décimale
  */
+string subtract(string, string);
 string factorial(int n) {
-  string resultat;
+  string resultat = "1";
 
   // A COMPLETER
-
+  string value = to_string(n);
+  string multiplier = "0";
+  
+  while(multiplier != value) {
+    multiplier = add(multiplier, "1");
+    resultat = multiply(multiplier, resultat);
+  }
+  
   return resultat;
 }
 
 /**
  Soustraction
-
+ 
  @param lhs entier >=0 représenté en notation décimale
  @param rhs entier >=0 représenté en notation décimale
 
