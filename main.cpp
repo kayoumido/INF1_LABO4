@@ -1,7 +1,7 @@
 /* ---------------------------
  Laboratoire : 4
  Fichier : main.cpp
- Auteur(s) :
+ Auteur(s) : Doran Kayoumi, Robin Demarta, Gabrielle Thurnherr
  Date : 01.11.2018
 
  But :         Mise en oeuvre d'opérations arithmétiques simples
@@ -11,7 +11,7 @@
 
  Remarque(s) :
 
- Compilateur :
+ Compilateur : g++ 6.3.0
  --------------------------- */
 
 #include <cstdlib>
@@ -20,25 +20,27 @@
 
 using namespace std;
 
-const int ZERO_INT_VALUE = '0';
 const char ZERO = '0';
+const char NEGATIVE_SIGN = '-';
+const short ZERO_INT_VALUE = ZERO;
+const short CARRY_LIMIT = 10;
 
 /**
- * [convertit un int en char]
- * @param  x [int a convertir]
- * @return   [int converti]
+ * [convertit un entier en char]
+ * @param  x [entier a convertir]
+ * @return   [entier converti]
  */
-char intToChar(int x) {
+char integerToChar(int x) {
   return (char)x + ZERO_INT_VALUE;
 }
 
 /**
- convertit un char en int
+ convertit un char en entier
  @param  c [char a convertir]
- @return   [int convertit]
+ @return   [entier convertit]
  */
-int charToInt(char c) {
-  return (int)c - ZERO_INT_VALUE;
+short charToInteger(char c) {
+  return (short)c - ZERO_INT_VALUE;
 }
 
 /**
@@ -48,8 +50,8 @@ int charToInt(char c) {
  * @return    [retourne la string de la meme longueur que la premiere]
  */
 string equaliseLength(string s1, string s2) {
-  int difference = s1.length() - s2.length();
-  for (int i = difference; i > 0; i--) {
+  unsigned long long difference = s1.length() - s2.length();
+  for (unsigned long long i = difference; i > 0; i--) {
     s2 = ZERO + s2;
   }
   return s2;
@@ -60,13 +62,24 @@ string equaliseLength(string s1, string s2) {
  @param value
  @param carryContainer
  */
-void checkForCarry(int& value, int& carryContainer) {
-  if(value >= 10) {
-    carryContainer = value / 10;
-    value -= carryContainer * 10;
+void checkForCarry(short& value, short& carryContainer) {
+  if(value >= CARRY_LIMIT) {
+    carryContainer = value / CARRY_LIMIT;
+    value -= carryContainer * CARRY_LIMIT;
   } else {
     carryContainer = 0;
   }
+}
+
+/**
+ * [swap deux nombres]
+ * @param s1
+ * @param s2
+ */
+void swap(string& s1, string& s2) {
+  string tmp = s1;
+  s1 = s2;
+  s2 = tmp;
 }
 
 
@@ -83,8 +96,8 @@ string add(string lhs, string rhs) {
   char intermediateResult;
   short n1;
   short n2;
-  int total;
-  int carry = 0;
+  short total;
+  short carry = 0;
 
   lhs = ZERO + lhs;
   rhs = ZERO + rhs;
@@ -97,8 +110,8 @@ string add(string lhs, string rhs) {
   }
 
   for (int i = lhs.length() - 1; i >= 0; i--) {
-    n1 = charToInt(lhs[i]);
-    n2 = charToInt(rhs[i]);
+    n1 = charToInteger(lhs[i]);
+    n2 = charToInteger(rhs[i]);
 
     if (i == 0 and carry == 0) {
       continue;
@@ -106,9 +119,8 @@ string add(string lhs, string rhs) {
     else {
       total = n1 + n2 + carry;
     }
-    
     checkForCarry(total, carry);
-    intermediateResult = intToChar(total);
+    intermediateResult = integerToChar(total);
     resultat = intermediateResult + resultat;
   }
 
@@ -126,40 +138,36 @@ string add(string lhs, string rhs) {
 string multiply(string lhs, string rhs) {
   string resultat;
 
-  // A COMPLETER
-  int i1Digit;
-  int i2Digit;
-  int carry = 0;
-  int multiplicationDigit = 0;
+  short i1Digit;
+  short i2Digit;
+  short carry = 0;
+  short multiplicationDigit = 0;
   string multiplication;
   string zeros;
 
   //Parcourir premier nombre
   for(int i = lhs.length() - 1; i >= 0; --i) {
-    i1Digit = charToInt(lhs[i]);
+    i1Digit = charToInteger(lhs[i]);
     carry = 0;
     multiplication = zeros;
 
     //Parcourir deuxième nombre et multiplier chaque digit
     for(int j = rhs.length() - 1; j >= 0; --j) {
-      i2Digit = charToInt(rhs[j]);
+      i2Digit = charToInteger(rhs[j]);
 
       multiplicationDigit = (i1Digit * i2Digit) + carry;
       checkForCarry(multiplicationDigit, carry);
 
-      multiplication = intToChar(multiplicationDigit) + multiplication;
+      multiplication = integerToChar(multiplicationDigit) + multiplication;
     }
 
     //Ajouter le dernier carry s'il y en a un
     if(carry != 0) {
-      multiplication = intToChar(carry) + multiplication;
+      multiplication = integerToChar(carry) + multiplication;
     }
 
-    zeros += "0"; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire
+    zeros += ZERO; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire
     resultat = add(resultat, multiplication);
-
-    //cout << endl << multiplication + (i > 0 ? " + " : " = ") << endl; //TEST
-
   }
 
   return resultat;
@@ -192,32 +200,28 @@ string subtract(string lhs, string rhs) {
   string resultat;
   bool negative = false;
 
-  // check if left hand side value is smaller thant the right one
+  // check if left hand side value is smaller than the right one
   if (lhs.length() < rhs.length()) {
-    string tmp = lhs;
-    lhs = rhs;
-    rhs = tmp;
+    swap(lhs,rhs);
     negative = true;
   }
 
-  if (lhs.length() == rhs.length() and charToInt(lhs[0]) < charToInt(rhs[0])) {
+  if (lhs.length() == rhs.length() and charToInteger(lhs[0]) < charToInteger(rhs[0])) {
     for (int i = (int)lhs.length() - 1; i >= 0; --i) {
-      if (charToInt(lhs[i]) < charToInt(rhs[i])) {
-        string tmp = lhs;
-        lhs = rhs;
-        rhs = tmp;
+      if (charToInteger(lhs[i]) < charToInteger(rhs[i])) {
+        swap(lhs,rhs);
         negative = true;
         break;
       }
     }
   }
 
-  int size_difference = (int)lhs.length() - (int)rhs.length();
+  int sizeDifference = (int)lhs.length() - (int)rhs.length();
 
   // add 0 at the beginning of the rhs
   // so we have two numbers with the same length
-  for (int i = 0; i < size_difference; ++i) {
-    rhs = "0" + rhs;
+  for (int i = 0; i < sizeDifference; ++i) {
+    rhs = ZERO + rhs;
   }
 
   /**
@@ -228,19 +232,21 @@ string subtract(string lhs, string rhs) {
         difference += 10;
     N3.digit[i] = difference;
    */
-  for (int i = (int)lhs.length() - 1; i >= 0; --i) {
-
-    int difference = charToInt(lhs[i]) - charToInt(rhs[i]);
+  int lhsLength = (int)lhs.length();
+  for (int i = lhsLength - 1; i >= 0; --i) {
+    short difference = charToInteger(lhs[i]) - charToInteger(rhs[i]);
 
     if (difference < 0) {
-      lhs[i - 1] = intToChar( charToInt(lhs[i - 1]) - 1 );
-      difference += 10;
+      lhs[i - 1] = integerToChar( charToInteger(lhs[i - 1]) - 1 );
+      difference += CARRY_LIMIT;
     }
-    if (difference == 0 and i == 0 and lhs.length() != 1) continue;
-    resultat = intToChar(difference) + resultat;
+
+    if (difference == 0 and i == 0 and lhsLength != 1) continue;
+
+    resultat = integerToChar(difference) + resultat;
   }
 
-  if (negative) resultat = "-" + resultat;
+  if (negative) resultat = NEGATIVE_SIGN + resultat;
 
   return resultat;
 }
