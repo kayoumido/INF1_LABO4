@@ -42,14 +42,18 @@ int charToInt(char c) {
 }
 
 /**
- convertit un int en char
- @param  c [int a convertir]
- @return   [char convertit]
+ * [rallonge la string la plus courte a la meme longueur que l'autre]
+ * @param  s1 [string de la plus grande longueur]
+ * @param  s2 [string a rallonger]
+ * @return    [retourne la string de la meme longueur que la premiere]
  */
-char intToChar(int value) {
-  return (char)(value + ZERO_INT_VALUE);
+string equaliseLength(string s1, string s2) {
+  int difference = s1.length() - s2.length();
+  for (int i = difference; i > 0; i--) {
+    s2 = ZERO + s2;
+  }
+  return s2;
 }
-
 
 /**
  Vérifie si le nombre produit un carry et met à jour les valeurs
@@ -65,6 +69,7 @@ void checkForCarry(int& value, int& carryContainer) {
   }
 }
 
+
 /**
  Addition
 
@@ -78,8 +83,8 @@ string add(string lhs, string rhs) {
   char intermediateResult;
   short n1;
   short n2;
-  short total;
-  short carry = 0;
+  int total;
+  int carry = 0;
 
   lhs = ZERO + lhs;
   rhs = ZERO + rhs;
@@ -101,15 +106,8 @@ string add(string lhs, string rhs) {
     else {
       total = n1 + n2 + carry;
     }
-
-    if (total >= 10) {
-      carry = 1;
-      total = total - 10;
-    }
-    else {
-      carry = 0;
-    }
-
+    
+    checkForCarry(total, carry);
     intermediateResult = intToChar(total);
     resultat = intermediateResult + resultat;
   }
