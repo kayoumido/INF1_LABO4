@@ -181,8 +181,57 @@ string factorial(int n) {
  */
 string subtract(string lhs, string rhs) {
   string resultat;
+  bool negative = false;
 
-  // A COMPLETER
+  // check if left hand side value is smaller thant the right one
+  if (lhs.length() < rhs.length()) {
+    string tmp = lhs;
+    lhs = rhs;
+    rhs = tmp;
+    negative = true;
+  }
+
+  if (lhs.length() == rhs.length() and charToInt(lhs[0]) < charToInt(rhs[0])) {
+    for (int i = (int)lhs.length() - 1; i >= 0; --i) {
+      if (charToInt(lhs[i]) < charToInt(rhs[i])) {
+        string tmp = lhs;
+        lhs = rhs;
+        rhs = tmp;
+        negative = true;
+        break;
+      }
+    }
+  }
+
+  int size_difference = (int)lhs.length() - (int)rhs.length();
+
+  // add 0 at the beginning of the rhs
+  // so we have two numbers with the same length
+  for (int i = 0; i < size_difference; ++i) {
+    rhs = "0" + rhs;
+  }
+
+  /**
+   * for each character (right to left):
+    difference = N1.digit[i] - N2.digit[i];
+    if (difference < 0)
+        N1.digit[i - 1]--;
+        difference += 10;
+    N3.digit[i] = difference;
+   */
+  for (int i = (int)lhs.length() - 1; i >= 0; --i) {
+
+    int difference = charToInt(lhs[i]) - charToInt(rhs[i]);
+
+    if (difference < 0) {
+      lhs[i - 1] = intToChar( charToInt(lhs[i - 1]) - 1 );
+      difference += 10;
+    }
+
+    resultat = intToChar(difference) + resultat;
+  }
+
+  if (negative) resultat = "-" + resultat;
 
   return resultat;
 }
@@ -213,3 +262,16 @@ int main() {
 
   return EXIT_SUCCESS; 
 }
+
+/*
+ * 100 - 120
+ * 0 - 0 = 0
+ * 0 - 2 = -2
+ * 1 - 1 = 0
+ *
+ * 10 - 120
+ * 0 - 0 = 0
+ * 1 - 2 = 1
+ * 0 - 1 = -1
+ * 010
+ */
