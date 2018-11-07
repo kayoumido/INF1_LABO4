@@ -21,6 +21,16 @@
 using namespace std;
 
 const int ZERO_INT_VALUE = '0';
+const char ZERO = '0';
+
+/**
+ * [convertit un int en char]
+ * @param  x [int a convertir]
+ * @return   [int converti]
+ */
+char intToChar(int x) {
+  return (char)x + ZERO_INT_VALUE;
+}
 
 /**
  convertit un char en int
@@ -50,7 +60,7 @@ void checkForCarry(int& value, int& carryContainer) {
   if(value >= 10) {
     carryContainer = value / 10;
     value -= carryContainer * 10;
-  } else {  
+  } else {
     carryContainer = 0;
   }
 }
@@ -65,45 +75,46 @@ void checkForCarry(int& value, int& carryContainer) {
  */
 string add(string lhs, string rhs) {
   string resultat;
+  char intermediateResult;
+  short n1;
+  short n2;
+  short total;
+  short carry = 0;
 
-  // A COMPLETER
-  
-  //La taille de lhs doit être >= à celle de rhs
-  if(lhs.length() < rhs.length()) {
-    string temp = lhs;
-    lhs = rhs;
-    rhs = temp;
+  lhs = ZERO + lhs;
+  rhs = ZERO + rhs;
+
+  if (lhs.length() > rhs.length()) {
+    rhs = equaliseLength(lhs,rhs);
   }
-  
-  int lhsLength = lhs.length();
-  int rhsLength = rhs.length();
-  int addition;
-  int carry = 0;
-  int deltaLength = lhsLength - rhsLength;
-  
-  //Compenser la taille de rhs par des zéros au début
-  for(int i = 0; i < deltaLength; ++i) {
-    rhs = '0' + rhs;
+  else if (rhs.length() > lhs.length()) {
+    lhs = equaliseLength(rhs,lhs);
   }
-  
-  for(int i = lhsLength - 1; i >= 0; --i) {
-    int i1Digit = charToInt(lhs[i]);
-    int i2Digit = charToInt(rhs[i]);
-    
-    addition = i1Digit + i2Digit + carry;
-    checkForCarry(addition, carry);
-    
-    resultat = intToChar(addition) + resultat;
+
+  for (int i = lhs.length() - 1; i >= 0; i--) {
+    n1 = charToInt(lhs[i]);
+    n2 = charToInt(rhs[i]);
+
+    if (i == 0 and carry == 0) {
+      continue;
+    }
+    else {
+      total = n1 + n2 + carry;
+    }
+
+    if (total >= 10) {
+      carry = 1;
+      total = total - 10;
+    }
+    else {
+      carry = 0;
+    }
+
+    intermediateResult = intToChar(total);
+    resultat = intermediateResult + resultat;
   }
-  
-  //Ajouter le dernier carry s'il y en a un
-  if(carry != 0) {
-    resultat = intToChar(carry) + resultat;    
-  }
-  
-  //LORSQU'IL Y A UN DERNIER CARRY (DEJA PRIS DANS LA DERNIERE ADDITION) IL EST RAJOUTE ENCORE A LA FIN -> FAUX
-  
-  return resultat;
+
+    return resultat;
 }
 
 /**
@@ -124,35 +135,35 @@ string multiply(string lhs, string rhs) {
   int multiplicationDigit = 0;
   string multiplication;
   string zeros;
-  
+
   //Parcourir premier nombre
   for(int i = lhs.length() - 1; i >= 0; --i) {
     i1Digit = charToInt(lhs[i]);
     carry = 0;
     multiplication = zeros;
-    
+
     //Parcourir deuxième nombre et multiplier chaque digit
     for(int j = rhs.length() - 1; j >= 0; --j) {
       i2Digit = charToInt(rhs[j]);
-            
+
       multiplicationDigit = (i1Digit * i2Digit) + carry;
       checkForCarry(multiplicationDigit, carry);
-      
+
       multiplication = intToChar(multiplicationDigit) + multiplication;
     }
-    
+
     //Ajouter le dernier carry s'il y en a un
     if(carry != 0) {
-      multiplication = intToChar(carry) + multiplication;    
+      multiplication = intToChar(carry) + multiplication;
     }
-    
-    zeros += "0"; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire    
-    resultat = add(resultat, multiplication);    
-    
+
+    zeros += "0"; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire
+    resultat = add(resultat, multiplication);
+
     //cout << endl << multiplication + (i > 0 ? " + " : " = ") << endl; //TEST
-    
+
   }
-  
+
   return resultat;
 }
 
@@ -260,5 +271,5 @@ int main() {
   cin >> i3;
   cout << "Factoriel(" << i3 << ") = " << factorial(i3) << endl;
 
-  return EXIT_SUCCESS; 
+  return EXIT_SUCCESS;
 }
