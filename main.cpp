@@ -24,6 +24,7 @@ const char ZERO = '0';
 const char NEGATIVE_SIGN = '-';
 const short ZERO_INT_VALUE = ZERO;
 const short CARRY_LIMIT = 10;
+const short WORKING_BASE = 10;
 
 /**
  * [convertit un entier en char]
@@ -181,13 +182,21 @@ string multiply(string lhs, string rhs) {
  @return n!, la factorielle de n représentée en notation décimale
  */
 string subtract(string, string);
+string integerToString(int toConvert) {
+  string converted;
+  while (toConvert > 0) {
+    converted = integerToChar(toConvert % WORKING_BASE) + converted;
+    toConvert = toConvert / WORKING_BASE;
+  }
+  return converted;
+}
 string factorial(int n) {
   string resultat = "1";
 
   // A COMPLETER
-  string value = to_string(n);
+  string value = integerToString(n);
   string multiplier = "0";
-  
+
   while(multiplier != value) {
     multiplier = add(multiplier, "1");
     resultat = multiply(multiplier, resultat);
