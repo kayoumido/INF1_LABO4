@@ -40,6 +40,19 @@ char intToChar(int value) {
   return (char)(value + ZERO_INT_VALUE);
 }
 
+
+/**
+ * Vérifie si le nombre produit un carry et met à jour les valeurs
+ * @param value
+ * @param carryContainer
+ */
+void checkForCarry(int& value, int& carryContainer) {
+  if(value >= 10) {
+    carryContainer = value / 10;
+    value -= carryContainer * 10;
+  }
+}
+
 /**
  Addition
 
@@ -52,20 +65,44 @@ string add(string lhs, string rhs) {
   string resultat;
 
   // A COMPLETER
-
-  return resultat;
-}
-
-/**
- * Vérifie si le nombre produit un carry et met à jour les valeurs
- * @param value
- * @param carryContainer
- */
-void checkForCarry(int& value, int& carryContainer) {
-  if(value >= 10) {
-    carryContainer = value / 10;
-    value -= carryContainer * 10;
+  
+  //La taille de lhs doit être >= à celle de rhs
+  if(lhs.length() < rhs.length()) {
+    string temp = lhs;
+    lhs = rhs;
+    rhs = temp;
   }
+  
+  int lhsLength = lhs.length();
+  int rhsLength = rhs.length();
+  int addition;
+  int carry = 0;
+  int deltaLength = lhsLength - rhsLength;
+  
+  //Compenser la taille de rhs par des zéros au début
+  for(int i = 0; i < deltaLength; ++i) {
+    rhs = '0' + rhs;
+  }
+  
+  for(int i = lhsLength - 1; i >= 0; --i) {
+    int i1Digit = charToInt(lhs[i]);
+    int i2Digit = charToInt(rhs[i]);
+    
+    addition = i1Digit + i2Digit + carry;
+    carry = 0;
+    checkForCarry(addition, carry);
+    
+    resultat = intToChar(addition) + resultat;
+  }
+  
+  //Ajouter le dernier carry s'il y en a un
+  if(carry != 0) {
+    resultat = intToChar(carry) + resultat;    
+  }
+  
+  //LORSQU'IL Y A UN DERNIER CARRY (DEJA PRIS DANS LA DERNIERE ADDITION) IL EST RAJOUTE ENCORE A LA FIN -> FAUX
+  
+  return resultat;
 }
 
 /**
@@ -109,8 +146,9 @@ string multiply(string lhs, string rhs) {
     zeros += "0"; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire 
     
     //PEUT RESORTIR DES 0 / 00 / 000 / ...
-    //resultat = add(resultat, multiplication);    
-    resultat += multiplication + (i > 0 ? " + " : ""); //TEST
+    resultat = add(resultat, multiplication);
+    
+    //cout << multiplication + (i > 0 ? " + " : " = "); //TEST
   }
   
   return resultat;
@@ -171,5 +209,5 @@ int main() {
   cin >> i3;
   cout << "Factoriel(" << i3 << ") = " << factorial(i3) << endl;
 
-  return EXIT_SUCCESS;
+  return EXIT_SUCCESS; 
 }
