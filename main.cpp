@@ -127,7 +127,8 @@ string add(string lhs, string rhs) {
   rhs = ZERO + rhs;
 
   /**
-   * [controle quelle est la string la plus longue et la plus courte en rajoutant des zeros]
+   * controle quelle est la string la plus longue
+   * et la plus courte en rajoutant des zeros
    */
   if (lhs.length() > rhs.length()) {
     rhs = equaliseLength(lhs, rhs);
@@ -136,15 +137,16 @@ string add(string lhs, string rhs) {
   }
 
   /**
-   * [prend le dernier caractere des strings et les additionne]
-   * @param i [indice de la string, commence à la fin et remonte au début]
+   * prend le dernier caractere des strings et les additionne
+   * @param i indice de la string, commence à la fin et remonte au début
    */
   for (int i = lhs.length() - 1; i >= 0; i--) {
     n1 = charToInteger(lhs[i]);
     n2 = charToInteger(rhs[i]);
 
     /**
-     * [permet de controler le cas limite, et de ne pas ajouter un zero au debut du resultat]
+     * permet de controler le cas limite,
+     * et de ne pas ajouter un zero au debut du resultat
      */
     if (i == 0 and carry == 0) {
       continue;
