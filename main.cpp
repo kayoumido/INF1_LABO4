@@ -86,6 +86,25 @@ string equaliseLength(const string& s1, string s2) {
   return s2;
 }
 
+string removeZeros(string value) {
+  string result;
+  bool building = false;
+  int valueLength = value.length();
+  
+  for(int i = 0; i < valueLength; ++i) {
+    if(value[i] != ZERO || building) {
+      building = true;
+      result += value[i];
+    }
+  }
+  
+  if(!building) {
+    result = ZERO;
+  }
+  
+  return result;
+}
+
 /**
  * Vérifie si le nombre produit un carry et met à jour les valeurs
  *
@@ -200,7 +219,7 @@ string multiply(string lhs, string rhs) {
     result = add(result, multiplication);
   }
 
-  return result;
+  return removeZeros(result);
 }
 
 /**
@@ -274,7 +293,7 @@ string subtract(string lhs, string rhs) {
 
   if (negative) result = NEGATIVE_SIGN + result;
 
-  return result;
+  return removeZeros(result);
 }
 
 /**
