@@ -86,6 +86,11 @@ string equaliseLength(const string& s1, string s2) {
   return s2;
 }
 
+/**
+ * Retire les éventuels premier zéros d'une string
+ * @param value string à traiter
+ * @return le string sans les premiers zéros
+ */
 string removeZeros(string value) {
   string result;
   bool building = false;
@@ -285,8 +290,6 @@ string subtract(string lhs, string rhs) {
       lhs[i - 1] = integerToChar(charToInteger(lhs[i - 1]) - 1);
       difference += CARRY_LIMIT;
     }
-
-    if (difference == 0 and i == 0 and lhsLength != 1) continue;
 
     result = integerToChar(difference) + result;
   }
