@@ -47,6 +47,26 @@ short charToInteger(char c) {
 }
 
 /**
+ * Convertit une string en int
+ * @param toConvert
+ * 
+ * @return le string convertit
+ */
+string integerToString(int toConvert) {
+  string converted;
+  
+  if(toConvert == 0) {
+    converted = ZERO;
+  }
+  
+  while (toConvert > 0) {
+    converted = integerToChar(toConvert % WORKING_BASE) + converted;
+    toConvert = toConvert / WORKING_BASE;
+  }
+  return converted;
+}
+
+/**
  * Rallonge la string la plus courte à la même longueur
  * que l'autreen y ajoutant des zéros
  * @param s1 string de la plus grande longueur
@@ -173,23 +193,6 @@ string multiply(string lhs, string rhs) {
   }
 
   return resultat;
-}
-
-string subtract(string, string);
-
-/**
- * Convertit une string en int
- * @param toConvert
- * 
- * @return le string convertit
- */
-string integerToString(int toConvert) {
-  string converted;
-  while (toConvert > 0) {
-    converted = integerToChar(toConvert % WORKING_BASE) + converted;
-    toConvert = toConvert / WORKING_BASE;
-  }
-  return converted;
 }
 
 /**
