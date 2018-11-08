@@ -117,33 +117,42 @@ void swap(string& s1, string& s2) {
  */
 string add(string lhs, string rhs) {
   string result;
-  char intermediateResult;
   short n1;
   short n2;
   short total;
   short carry = 0;
 
+  // rajoute un zero au début du string
   lhs = ZERO + lhs;
   rhs = ZERO + rhs;
 
+  /**
+   * [controle quelle est la string la plus longue et la plus courte en rajoutant des zeros]
+   */
   if (lhs.length() > rhs.length()) {
     rhs = equaliseLength(lhs, rhs);
   } else if (rhs.length() > lhs.length()) {
     lhs = equaliseLength(rhs, lhs);
   }
 
+  /**
+   * [prend le dernier caractere des strings et les additionne]
+   * @param i [indice de la string, commence à la fin et remonte au début]
+   */
   for (int i = lhs.length() - 1; i >= 0; i--) {
     n1 = charToInteger(lhs[i]);
     n2 = charToInteger(rhs[i]);
 
+    /**
+     * [permet de controler le cas limite, et de ne pas ajouter un zero au debut du resultat]
+     */
     if (i == 0 and carry == 0) {
       continue;
     } else {
       total = n1 + n2 + carry;
     }
     checkForCarry(total, carry);
-    intermediateResult = integerToChar(total);
-    result = intermediateResult + result;
+    result = integerToChar(total) + result;
   }
 
   return result;
@@ -246,14 +255,6 @@ string subtract(string lhs, string rhs) {
 
   rhs = equaliseLength(lhs,rhs);
 
-  /**
-   * for each character (right to left):
-    difference = N1.digit[i] - N2.digit[i];
-    if (difference < 0)
-        N1.digit[i - 1]--;
-        difference += 10;
-    N3.digit[i] = difference;
-   */
   int lhsLength = (int) lhs.length();
   for (int i = lhsLength - 1; i >= 0; --i) {
     short difference = charToInteger(lhs[i]) - charToInteger(rhs[i]);
