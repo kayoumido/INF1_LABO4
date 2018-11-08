@@ -28,29 +28,32 @@ const short WORKING_BASE = 10;
 
 /**
  * Convertit un entier en char
+ *
  * @param x entier à convertir
  *
  * @return entier converti
  */
 char integerToChar(int x) {
-  return (char) x + ZERO_INT_VALUE;
+  return char(x + ZERO_INT_VALUE);
 }
 
 /**
  * Convertit un char en entier
+ *
  * @param c char à convertir
  *
  * @return entier converti
  */
 short charToInteger(char c) {
-  return (short) c - ZERO_INT_VALUE;
+  return c - ZERO_INT_VALUE;
 }
 
 /**
  * Convertit une string en int
- * @param toConvert
  *
- * @return le string convertit
+ * @param toConvert entier valeur a convertir
+ *
+ * @return l'entier convertit en string
  */
 string integerToString(int toConvert) {
   string converted;
@@ -68,13 +71,14 @@ string integerToString(int toConvert) {
 
 /**
  * Rallonge la string la plus courte à la même longueur
- * que l'autreen y ajoutant des zéros
+ * que l'autre en y ajoutant des zéros
+ *
  * @param s1 string de la plus grande longueur
  * @param s2 string a rallonger
  *
  * @return la string de la meme longueur que la premiere
  */
-string equaliseLength(string s1, string s2) {
+string equaliseLength(const string& s1, string s2) {
   unsigned long long difference = s1.length() - s2.length();
   for (unsigned long long i = difference; i > 0; i--) {
     s2 = ZERO + s2;
@@ -84,6 +88,7 @@ string equaliseLength(string s1, string s2) {
 
 /**
  * Vérifie si le nombre produit un carry et met à jour les valeurs
+ *
  * @param value
  * @param carryContainer
  */
@@ -98,8 +103,9 @@ void checkForCarry(short& value, short& carryContainer) {
 
 /**
  * Intervertit deux variables string
- * @param s1
- * @param s2
+ *
+ * @param s1 string à inverser
+ * @param s2 string à inverser  
  */
 void swap(string& s1, string& s2) {
   string tmp = s1;
@@ -122,32 +128,23 @@ string add(string lhs, string rhs) {
   short total;
   short carry = 0;
 
-  // rajoute un zero au début du string
+  // Rajoute un zero au début du string
   lhs = ZERO + lhs;
   rhs = ZERO + rhs;
 
-  /**
-   * controle quelle est la string la plus longue
-   * et la plus courte en rajoutant des zeros
-   */
+   // Controle quelle est la string la plus longue et la plus courte en rajoutant des zeros
   if (lhs.length() > rhs.length()) {
     rhs = equaliseLength(lhs, rhs);
   } else if (rhs.length() > lhs.length()) {
     lhs = equaliseLength(rhs, lhs);
   }
 
-  /**
-   * prend le dernier caractere des strings et les additionne
-   * @param i indice de la string, commence à la fin et remonte au début
-   */
-  for (int i = lhs.length() - 1; i >= 0; i--) {
+  // Prend le dernier caractere des strings et les additionne
+  for (int i = (int)lhs.length() - 1; i >= 0; i--) {
     n1 = charToInteger(lhs[i]);
     n2 = charToInteger(rhs[i]);
 
-    /**
-     * permet de controler le cas limite,
-     * et de ne pas ajouter un zero au debut du resultat
-     */
+    // Permet de controler le cas limite, et de ne pas ajouter un zero au debut du resultat
     if (i == 0 and carry == 0) {
       continue;
     } else {
@@ -178,14 +175,14 @@ string multiply(string lhs, string rhs) {
   string multiplication;
   string zeros;
 
-  //Parcourir premier nombre
-  for (int i = lhs.length() - 1; i >= 0; --i) {
+  // Parcourir premier nombre
+  for (int i = (int)lhs.length() - 1; i >= 0; --i) {
     i1Digit = charToInteger(lhs[i]);
     carry = 0;
     multiplication = zeros;
 
-    //Parcourir deuxième nombre et multiplier chaque digit
-    for (int j = rhs.length() - 1; j >= 0; --j) {
+    // Parcourir deuxième nombre et multiplier chaque digit
+    for (int j = (int)rhs.length() - 1; j >= 0; --j) {
       i2Digit = charToInteger(rhs[j]);
 
       multiplicationDigit = (i1Digit * i2Digit) + carry;
@@ -194,12 +191,12 @@ string multiply(string lhs, string rhs) {
       multiplication = integerToChar(multiplicationDigit) + multiplication;
     }
 
-    //Ajouter le dernier carry s'il y en a un
+    // Ajouter le dernier carry s'il y en a un
     if (carry != 0) {
       multiplication = integerToChar(carry) + multiplication;
     }
 
-    zeros += ZERO; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire
+    zeros += ZERO; // Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire
     result = add(result, multiplication);
   }
 
@@ -239,13 +236,17 @@ string subtract(string lhs, string rhs) {
   string result;
   bool negative = false;
 
-  // check if left hand side value is smaller than the right one
+  // Recherche de la valeur la plus grande.
+  //  Si la valeur `rhs` est plus grande que `lhs`,
+  //    alors elles sont inversées afin d'avoir la plus grande a gauche du calcul.
+  //  Si les valeurs on été inversé, le résultat de la soustraction sera donc négative.
   if (lhs.length() < rhs.length()) {
     swap(lhs, rhs);
     negative = true;
   }
-
-  if (lhs.length() == rhs.length() and charToInteger(lhs[0]) < charToInteger(rhs[0])) {
+  // Dans le cas ou les valeurs font la même longueur,
+  //   on vérifie, chaque caractère des valeurs afin de trouver la plus grande des deux.
+  if (lhs.length() == rhs.length() and charToInteger(lhs[0]) <= charToInteger(rhs[0])) {
     for (int i = (int) lhs.length() - 1; i >= 0; --i) {
       if (charToInteger(lhs[i]) < charToInteger(rhs[i])) {
         swap(lhs, rhs);
@@ -257,7 +258,7 @@ string subtract(string lhs, string rhs) {
 
   rhs = equaliseLength(lhs,rhs);
 
-  int lhsLength = (int) lhs.length();
+  int lhsLength = (int)lhs.length();
   for (int i = lhsLength - 1; i >= 0; --i) {
     short difference = charToInteger(lhs[i]) - charToInteger(rhs[i]);
 
