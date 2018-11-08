@@ -4,7 +4,7 @@
  Auteur(s) : Doran Kayoumi, Robin Demarta, Gabrielle Thurnherr
  Date : 01.11.2018
 
- But :         Mise en oeuvre d'opérations arithmétiques simples
+ But : Mise en oeuvre d'opérations arithmétiques simples
  (+,-,*) sur des entiers positifs longs représentés
  sous forme de chaines de caractères en notation
  décimale
@@ -29,7 +29,7 @@ const short WORKING_BASE = 10;
 /**
  * Convertit un entier en char
  * @param x entier à convertir
- * 
+ *
  * @return entier converti
  */
 char integerToChar(int x) {
@@ -39,7 +39,7 @@ char integerToChar(int x) {
 /**
  * Convertit un char en entier
  * @param c char à convertir
- * 
+ *
  * @return entier converti
  */
 short charToInteger(char c) {
@@ -49,16 +49,16 @@ short charToInteger(char c) {
 /**
  * Convertit une string en int
  * @param toConvert
- * 
+ *
  * @return le string convertit
  */
 string integerToString(int toConvert) {
   string converted;
-  
+
   if(toConvert == 0) {
     converted = ZERO;
   }
-  
+
   while (toConvert > 0) {
     converted = integerToChar(toConvert % WORKING_BASE) + converted;
     toConvert = toConvert / WORKING_BASE;
@@ -71,7 +71,7 @@ string integerToString(int toConvert) {
  * que l'autreen y ajoutant des zéros
  * @param s1 string de la plus grande longueur
  * @param s2 string a rallonger
- * 
+ *
  * @return la string de la meme longueur que la premiere
  */
 string equaliseLength(string s1, string s2) {
@@ -109,14 +109,14 @@ void swap(string& s1, string& s2) {
 
 /**
  * Addition
- * 
+ *
  * @param lhs entier >=0 représenté en notation décimale
  * @param rhs entier >=0 représenté en notation décimale
- * 
+ *
  * @return somme des 2 entiers représentée en notation décimale
  */
 string add(string lhs, string rhs) {
-  string resultat;
+  string result;
   char intermediateResult;
   short n1;
   short n2;
@@ -143,22 +143,22 @@ string add(string lhs, string rhs) {
     }
     checkForCarry(total, carry);
     intermediateResult = integerToChar(total);
-    resultat = intermediateResult + resultat;
+    result = intermediateResult + result;
   }
 
-  return resultat;
+  return result;
 }
 
 /**
  * Multiplication
- * 
+ *
  * @param lhs entier >=0 représenté en notation décimale
  * @param rhs entier >=0 représenté en notation décimale
- * 
+ *
  * @return produit des 2 entiers représenté en notation décimale
  */
 string multiply(string lhs, string rhs) {
-  string resultat;
+  string result;
 
   short i1Digit;
   short i2Digit;
@@ -189,43 +189,43 @@ string multiply(string lhs, string rhs) {
     }
 
     zeros += ZERO; //Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire
-    resultat = add(resultat, multiplication);
+    result = add(result, multiplication);
   }
 
-  return resultat;
+  return result;
 }
 
 /**
  * Factorielle
- * 
+ *
  * @param n entier >=0
- * 
+ *
  * @return n! la factorielle de n représentée en notation décimale
  */
 string factorial(int n) {
-  string resultat = "1";
+  string result = "1";
 
   string value = integerToString(n);
   string multiplier = "0";
 
   while (multiplier != value) {
     multiplier = add(multiplier, "1");
-    resultat = multiply(multiplier, resultat);
+    result = multiply(multiplier, result);
   }
 
-  return resultat;
+  return result;
 }
 
 /**
  * Soustraction
- * 
+ *
  * @param lhs entier >=0 représenté en notation décimale
  * @param rhs entier >=0 représenté en notation décimale
- * 
+ *
  * @return différence (lhs - rhs) des 2 entiers représentée en notation décimale
  */
 string subtract(string lhs, string rhs) {
-  string resultat;
+  string result;
   bool negative = false;
 
   // check if left hand side value is smaller than the right one
@@ -244,13 +244,7 @@ string subtract(string lhs, string rhs) {
     }
   }
 
-  int sizeDifference = (int) lhs.length() - (int) rhs.length();
-
-  // add 0 at the beginning of the rhs
-  // so we have two numbers with the same length
-  for (int i = 0; i < sizeDifference; ++i) {
-    rhs = ZERO + rhs;
-  }
+  rhs = equaliseLength(lhs,rhs);
 
   /**
    * for each character (right to left):
@@ -271,17 +265,17 @@ string subtract(string lhs, string rhs) {
 
     if (difference == 0 and i == 0 and lhsLength != 1) continue;
 
-    resultat = integerToChar(difference) + resultat;
+    result = integerToChar(difference) + result;
   }
 
-  if (negative) resultat = NEGATIVE_SIGN + resultat;
+  if (negative) result = NEGATIVE_SIGN + result;
 
-  return resultat;
+  return result;
 }
 
 /**
  * Fonction principale
- * 
+ *
  * @return Mise en oeuvre d'opérations arithmétiques simples
  * (+,-,*) sur des entiers positifs longs représentés
  * sous forme de chaines de caractères en notation
