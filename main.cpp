@@ -17,6 +17,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <cassert>
+#include <algorithm>
+#include <limits>
 
 using namespace std;
 
