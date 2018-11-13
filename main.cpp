@@ -21,10 +21,11 @@
 #include <limits>
 using namespace std;
 
+const string DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char ZERO = '0';
 const char NEGATIVE_SIGN = '-';
-const short ZERO_INT_VALUE = ZERO;
-const short WORKING_BASE = 10;
+const int ZERO_INT_VALUE = ZERO;
+unsigned basis;
 
 /**
  conversion char en entier
@@ -38,7 +39,13 @@ const short WORKING_BASE = 10;
  alphanumérique.
  */
 int char2int(char c) {
-  return c - ZERO_INT_VALUE;;
+  int x = c - ZERO_INT_VALUE;
+
+  if(x >= 17) {
+    x -= 7;
+  }
+
+  return x;
 }
 
 /**
@@ -49,7 +56,7 @@ int char2int(char c) {
  * @return entier converti
  */
 char int2char(int x) {
-  return char(x + ZERO_INT_VALUE);
+  return DIGITS[x];
 }
 
 /**
@@ -117,9 +124,9 @@ string removeZeros(string value) {
  * @param carryContainer
  */
 void checkForCarry(int& value, int& carryContainer) {
-  if (value >= WORKING_BASE) {
-    carryContainer = value / WORKING_BASE;
-    value -= carryContainer * WORKING_BASE;
+  if (value >= basis) {
+    carryContainer = value / basis;
+    value -= carryContainer * basis;
   } else {
     carryContainer = 0;
   }
@@ -306,7 +313,7 @@ string subtract(string lhs, string rhs, unsigned base) {
 
     if (difference < 0) {
       lhs[i - 1] = int2char(char2int(lhs[i - 1]) - 1);
-      difference += WORKING_BASE;
+      difference += basis;
     }
 
     result = int2char(difference) + result;
@@ -330,21 +337,21 @@ int main() {
 
   unsigned base;
   cout << "Entrez la base \n";
-  cin >> base;
+  cin >> basis;
 
   string i1, i2;
-  cout << "Entrez deux entiers >= 0 en base " << base << endl;
+  cout << "Entrez deux entiers >= 0 en base " << basis << endl;
   cin >> i1 >> i2;
 
-  cout << i1 << " + " << i2 << " = " << add(i1,i2,base) << endl;
-  cout << i1 << " * " << i2 << " = " << multiply(i1,i2,base) << endl;
-  cout << i1 << " - " << i2 << " = " << subtract(i1,i2,base) << endl;
+  cout << i1 << " + " << i2 << " = " << add(i1,i2,basis) << endl;
+  cout << i1 << " * " << i2 << " = " << multiply(i1,i2,basis) << endl;
+  cout << i1 << " - " << i2 << " = " << subtract(i1,i2,basis) << endl;
 
   string i3;
-  cout << "\nEntrez un entier >= 0 en base " << base << endl;
+  cout << "\nEntrez un entier >= 0 en base " << basis << endl;
   cin >> i3;
 
-  cout << "Factoriel(" << i3 << ") = " << factorial(i3,base) << endl;
+  cout << "Factoriel(" << i3 << ") = " << factorial(i3,basis) << endl;
 
   return EXIT_SUCCESS;
 }
