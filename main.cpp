@@ -32,9 +32,9 @@ unsigned basis;
 
 /**
  * conversion char en entier
- * 
+ *
  * @param c charactere représentant un chiffre en base entre 2 et 36
- * 
+ *
  * @return le nombre correspondant au chiffre en entrée si c est un chiffre
  * ou une lettre majuscule ou minuscule. Par exemple, char2int('D')
  * retournera 13.
@@ -90,7 +90,11 @@ char int2char(int x) {
 bool isValidPositiveInteger(string nombre, unsigned base) {
   assert(base >= 2 and base <= 36);
 
-  // A COMPLETER
+  for (int i = 0; i < nombre.length(); i++) {
+    if (char2int(nombre[i]) >= base and char2int(nombre[i] < 0)) {
+      return false;
+    }
+  }
 
   return true;
 }
