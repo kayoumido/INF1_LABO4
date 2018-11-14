@@ -25,27 +25,42 @@ const string DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char ZERO = '0';
 const char NEGATIVE_SIGN = '-';
 const int ZERO_INT_VALUE = ZERO;
+const int A_UPPERCASE_INT_VALUE = 'A';
+const int A_LOWERCASE_INT_VALUE = 'a';
+const int A_INT_DIGIT_VALUE = 10;
 unsigned basis;
 
 /**
- conversion char en entier
-
- @param c charactere représentant un chiffre en base entre 2 et 36
-
- @return le nombre correspondant au chiffre en entrée si c est un chiffre
- ou une lettre majuscule ou minuscule. Par exemple, char2int('D')
- retournera 13.
- retourne un nombre négatif (à choix) si c n'est pas un caractère
- alphanumérique.
+ * conversion char en entier
+ * 
+ * @param c charactere représentant un chiffre en base entre 2 et 36
+ * 
+ * @return le nombre correspondant au chiffre en entrée si c est un chiffre
+ * ou une lettre majuscule ou minuscule. Par exemple, char2int('D')
+ * retournera 13.
+ * retourne un nombre négatif (à choix) si c n'est pas un caractère
+ * alphanumérique.
  */
 int char2int(char c) {
-  int x = c - ZERO_INT_VALUE;
-
-  if(x >= 17) {
-    x -= 7;
+  /*
+  int delta;
+  if (c >= A_UPPERCASE_INT_VALUE) {
+    if (c >= A_LOWERCASE_INT_VALUE) {
+      //a - z
+      delta = A_LOWERCASE_INT_VALUE - A_INT_DIGIT_VALUE;
+    } else {
+      //A - Z
+      delta = A_UPPERCASE_INT_VALUE - A_INT_DIGIT_VALUE;
+    }
+  } else {
+    //0 - 9
+    delta = ZERO_INT_VALUE;
   }
+  return c - delta;
+  */
 
-  return x;
+  return c - (c >= A_UPPERCASE_INT_VALUE ? (c >= A_LOWERCASE_INT_VALUE ? A_LOWERCASE_INT_VALUE - A_INT_DIGIT_VALUE : A_UPPERCASE_INT_VALUE - A_INT_DIGIT_VALUE) : ZERO_INT_VALUE);
+
 }
 
 /**
