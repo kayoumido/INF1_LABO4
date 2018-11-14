@@ -59,7 +59,11 @@ int char2int(char c) {
   return c - delta;
   */
 
-  return c - (c >= A_UPPERCASE_INT_VALUE ? (c >= A_LOWERCASE_INT_VALUE ? A_LOWERCASE_INT_VALUE - A_INT_DIGIT_VALUE : A_UPPERCASE_INT_VALUE - A_INT_DIGIT_VALUE) : ZERO_INT_VALUE);
+  return c - (c >= A_UPPERCASE_INT_VALUE ? (
+          c >= A_LOWERCASE_INT_VALUE ?
+          A_LOWERCASE_INT_VALUE - A_INT_DIGIT_VALUE :
+          A_UPPERCASE_INT_VALUE - A_INT_DIGIT_VALUE
+          ) : ZERO_INT_VALUE);
 
 }
 
@@ -323,12 +327,21 @@ string subtract(string lhs, string rhs, unsigned base) {
   rhs = equaliseLength(lhs,rhs);
 
   int lhsLength = (int)lhs.length();
+  bool borrow = false;
   for (int i = lhsLength - 1; i >= 0; --i) {
-    int difference = char2int(lhs[i]) - char2int(rhs[i]);
 
+    int leftNumber = char2int(lhs[i]);
+    int rightNumber = char2int(rhs[i]);
+
+    if (borrow) {
+      leftNumber--;
+      borrow = false;
+    }
+
+    int difference = leftNumber - rightNumber;
     if (difference < 0) {
-      lhs[i - 1] = int2char(char2int(lhs[i - 1]) - 1);
       difference += basis;
+      borrow = true;
     }
 
     result = int2char(difference) + result;
