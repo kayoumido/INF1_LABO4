@@ -358,6 +358,13 @@ string subtract(string lhs, string rhs, unsigned base) {
   return removeZeros(result);
 }
 
+void cleanCin() {
+  if (cin.fail()) {
+    std::cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  }
+}
+
 /**
  Fonction principale
 
@@ -375,11 +382,7 @@ int main() {
     cout << "Entrez la base \n";
     cin >> base;
 
-    if (cin.fail()) {
-      std::cin.clear();
-      cin.ignore(numeric_limits<streamsize>::max(), '\n');
-      continue;
-    }
+    cleanCin();
 
   } while (base < MIN_BASE or base > MAX_BASE);
 
@@ -395,8 +398,16 @@ int main() {
   cout << i1 << " - " << i2 << " = " << subtract(i1,i2,base) << endl;
 
   string i3;
-  cout << "\nEntrez un entier >= 0 en base " << base << endl;
-  cin >> i3;
+  do {
+
+    cout << "\nEntrez un entier >= 0 en base " << base << endl;
+    cin >> i3;
+
+    cleanCin();
+
+  } while (!isValidPositiveInteger(i3, base));
+
+
 
   cout << "Factoriel(" << i3 << ") = " << factorial(i3,base) << endl;
 
