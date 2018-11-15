@@ -330,8 +330,13 @@ string subtract(string lhs, string rhs) {
   return result;
 }
 
-void cleanCin() {
-  if (cin.fail()) {
+/**
+ * Vide le stream cin
+ *
+ * @param withoutFail bool flag permettant de vider le stream sans erreurs
+ */
+void cleanCin(bool withoutFail) {
+  if (cin.fail() or withoutFail) {
     std::cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
   }
@@ -354,9 +359,14 @@ int main() {
     cout << "Entrez la base \n";
     cin >> base;
 
-    cleanCin();
+    // En cas d'erreur lors de la saisie, le stream est vidé
+    cleanCin(false);
 
   } while (base < MIN_BASE or base > MAX_BASE);
+
+  // Vide du stream entre les entrées utilisateurs
+  // Afin d'éviter des comportements bizzare
+  cleanCin(true);
 
   string i1, i2;
   do {
@@ -369,13 +379,18 @@ int main() {
   cout << i1 << " * " << i2 << " = " << multiply(i1, i2) << endl;
   cout << i1 << " - " << i2 << " = " << subtract(i1, i2) << endl;
 
+  // Vide du stream entre les entrées utilisateurs
+  // Afin d'éviter des comportements bizzare
+  cleanCin(true);
+
   string i3;
   do {
 
     cout << "\nEntrez un entier >= 0 en base " << base << endl;
     cin >> i3;
 
-    cleanCin();
+    // En cas d'erreur lors de la saisie, le stream est vidé
+    cleanCin(false);
 
   } while (!isValidPositiveInteger(i3));
 
