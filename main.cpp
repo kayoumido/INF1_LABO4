@@ -88,7 +88,6 @@ char int2char(int x) {
  @return vrai si le nombre est valide, faux sinon.
  */
 bool isValidPositiveInteger(string number, unsigned base) {
-  assert(base >= 2 and base <= 36);
   bool isValid = true;
 
   for (char c : number) {
@@ -179,9 +178,6 @@ void swap(string& s1, string& s2) {
  @return somme des 2 entiers représentée en notation décimale
  */
 string add(string lhs, string rhs, unsigned base) {
-  assert(base >= 2 and base <= 36);
-  assert(isValidPositiveInteger(lhs, base));
-  assert(isValidPositiveInteger(rhs, base));
 
   string result;
   int n1;
@@ -229,9 +225,6 @@ string add(string lhs, string rhs, unsigned base) {
  @return produit des 2 entiers représenté en notation décimale
  */
 string multiply(string lhs, string rhs, unsigned base) {
-  assert(base >= 2 and base <= 36);
-  assert(isValidPositiveInteger(lhs, base));
-  assert(isValidPositiveInteger(rhs, base));
 
   string result;
 
@@ -279,8 +272,6 @@ string multiply(string lhs, string rhs, unsigned base) {
  @return n!, la factorielle de n représentée en notation décimale
  */
 string factorial(string n, unsigned base) {
-  assert(base >= 2 and base <= 36);
-  assert(isValidPositiveInteger(n, base));
 
   string result = "1";
   string multiplier = "0";
@@ -303,9 +294,6 @@ string factorial(string n, unsigned base) {
  @return différence (lhs - rhs) des 2 entiers représentée en notation décimale
  */
 string subtract(string lhs, string rhs, unsigned base) {
-  assert(base >= 2 and base <= 36);
-  assert(isValidPositiveInteger(lhs, base));
-  assert(isValidPositiveInteger(rhs, base));
 
   string result;
   bool negative = false;
