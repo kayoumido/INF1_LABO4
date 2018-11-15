@@ -385,7 +385,7 @@ int main() {
 
   string i1, i2;
   do {
-    cout << "1 : Entrez deux entiers >= 0 en base " << base << endl;
+    cout << "Entrez deux entiers >= 0 en base " << base << endl;
     cin >> i1 >> i2;
 
   } while (!isValidPositiveInteger(i1, base) or !isValidPositiveInteger(i2, base));
