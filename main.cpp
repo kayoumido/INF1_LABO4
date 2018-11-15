@@ -42,23 +42,6 @@ unsigned base;
  * alphanumérique.
  */
 int char2int(char c) {
-  /*
-  int delta;
-  if (c >= A_UPPERCASE_INT_VALUE) {
-    if (c >= A_LOWERCASE_INT_VALUE) {
-      //a - z
-      delta = A_LOWERCASE_INT_VALUE - A_INT_DIGIT_VALUE;
-    } else {
-      //A - Z
-      delta = A_UPPERCASE_INT_VALUE - A_INT_DIGIT_VALUE;
-    }
-  } else {
-    //0 - 9
-    delta = ZERO_INT_VALUE;
-  }
-  return c - delta;
-  */
-
   return c - (c >= A_UPPERCASE_INT_VALUE ? (
           c >= A_LOWERCASE_INT_VALUE ?
           A_LOWERCASE_INT_VALUE - A_INT_DIGIT_VALUE :
@@ -87,11 +70,11 @@ char int2char(int x) {
 
  @return vrai si le nombre est valide, faux sinon.
  */
-bool isValidPositiveInteger(string number, unsigned base) {
+bool isValidPositiveInteger(string number) {
   bool isValid = true;
 
   for (char c : number) {
-    if (char2int(c) >= base or char2int(c) < 0) {
+    if (char2int(c) >= (int)base or char2int(c) < 0) {
       isValid = false;
       break;
     }
@@ -125,12 +108,11 @@ string equaliseLength(const string& s1, string s2) {
 string removeZeros(string value) {
   string result;
   bool building = false;
-  int valueLength = (int)value.length();
 
-  for(int i = 0; i < valueLength; ++i) {
-    if(value[i] != ZERO || building) {
+  for (char i : value) {
+    if(i != ZERO || building) {
       building = true;
-      result += value[i];
+      result += i;
     }
   }
 
@@ -148,9 +130,9 @@ string removeZeros(string value) {
  * @param carryContainer
  */
 void checkForCarry(int& value, int& carryContainer) {
-  if (value >= base) {
-    carryContainer = value / base;
-    value -= carryContainer * base;
+  if (value >= (int)base) {
+    carryContainer = value / (int)base;
+    value -= carryContainer * (int)base;
   } else {
     carryContainer = 0;
   }
@@ -177,7 +159,7 @@ void swap(string& s1, string& s2) {
 
  @return somme des 2 entiers représentée en notation décimale
  */
-string add(string lhs, string rhs, unsigned base) {
+string add(string lhs, string rhs) {
 
   string result;
   int n1;
@@ -211,7 +193,7 @@ string add(string lhs, string rhs, unsigned base) {
     result = int2char(total) + result;
   }
 
-  return result;
+  return removeZeros(result);
 }
 
 
@@ -224,7 +206,7 @@ string add(string lhs, string rhs, unsigned base) {
 
  @return produit des 2 entiers représenté en notation décimale
  */
-string multiply(string lhs, string rhs, unsigned base) {
+string multiply(string lhs, string rhs) {
 
   string result;
 
@@ -256,8 +238,9 @@ string multiply(string lhs, string rhs, unsigned base) {
       multiplication = int2char(carry) + multiplication;
     }
 
-    zeros += ZERO; // Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire
-    result = add(result, multiplication, base);
+    // Prochain chiffre -> ajouter un zéro au début du résultat intermédiaire
+    zeros += ZERO;
+    result = add(result, multiplication);
   }
 
   return removeZeros(result);
@@ -271,14 +254,14 @@ string multiply(string lhs, string rhs, unsigned base) {
 
  @return n!, la factorielle de n représentée en notation décimale
  */
-string factorial(string n, unsigned base) {
+string factorial(string n) {
 
   string result = "1";
   string multiplier = "0";
 
   while (multiplier != n) {
-    multiplier = add(multiplier, "1", base);
-    result = multiply(multiplier, result, base);
+    multiplier = add(multiplier, "1");
+    result = multiply(multiplier, result);
   }
 
   return result;
@@ -293,7 +276,7 @@ string factorial(string n, unsigned base) {
 
  @return différence (lhs - rhs) des 2 entiers représentée en notation décimale
  */
-string subtract(string lhs, string rhs, unsigned base) {
+string subtract(string lhs, string rhs) {
 
   string result;
   bool negative = false;
@@ -341,9 +324,10 @@ string subtract(string lhs, string rhs, unsigned base) {
     result = int2char(difference) + result;
   }
 
+  result = removeZeros(result);
   if (negative) result = NEGATIVE_SIGN + result;
 
-  return removeZeros(result);
+  return result;
 }
 
 void cleanCin() {
@@ -379,11 +363,11 @@ int main() {
     cout << "Entrez deux entiers >= 0 en base " << base << endl;
     cin >> i1 >> i2;
 
-  } while (!isValidPositiveInteger(i1, base) or !isValidPositiveInteger(i2, base));
+  } while (!isValidPositiveInteger(i1) or !isValidPositiveInteger(i2));
 
-  cout << i1 << " + " << i2 << " = " << add(i1,i2,base) << endl;
-  cout << i1 << " * " << i2 << " = " << multiply(i1,i2,base) << endl;
-  cout << i1 << " - " << i2 << " = " << subtract(i1,i2,base) << endl;
+  cout << i1 << " + " << i2 << " = " << add(i1, i2) << endl;
+  cout << i1 << " * " << i2 << " = " << multiply(i1, i2) << endl;
+  cout << i1 << " - " << i2 << " = " << subtract(i1, i2) << endl;
 
   string i3;
   do {
@@ -393,11 +377,11 @@ int main() {
 
     cleanCin();
 
-  } while (!isValidPositiveInteger(i3, base));
+  } while (!isValidPositiveInteger(i3));
 
 
 
-  cout << "Factoriel(" << i3 << ") = " << factorial(i3,base) << endl;
+  cout << "Factoriel(" << i3 << ") = " << factorial(i3) << endl;
 
   return EXIT_SUCCESS;
 }
