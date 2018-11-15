@@ -89,14 +89,15 @@ char int2char(int x) {
  */
 bool isValidPositiveInteger(string nombre, unsigned base) {
   assert(base >= 2 and base <= 36);
-
+  bool isValid = true;
   for (int i = 0; i < nombre.length(); i++) {
     if (char2int(nombre[i]) >= base and char2int(nombre[i] < 0)) {
-      return false;
+      isValid = false;
+      break;
     }
   }
 
-  return true;
+  return isValid;
 }
 
 /**
