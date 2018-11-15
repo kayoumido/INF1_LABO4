@@ -1,16 +1,16 @@
 /* ---------------------------
  Laboratoire : 4b
- Fichier :     main.cpp
- Auteur(s) :
- Date :
+ Fichier : main.cpp
+ Auteur(s) : Doran Kayoumi, Robin Demarta, Gabrielle Thurnherr
+ Date : 13.11.2018
 
- But :         Mise en oeuvre d'opérations arithmétiques simples
+ But : Mise en oeuvre d'opérations arithmétiques simples
  (+,-,*) sur des entiers positifs longs représentés
  sous forme de chaines de caractères en base entre 2 et 36
 
- Remarque(s) :
+ Remarque(s) : -
 
- Compilateur :
+ Compilateur : g++ 6.3.0
  --------------------------- */
 
 #include <cstdlib>
@@ -62,13 +62,13 @@ char int2char(int x) {
 }
 
 /**
- verification de validite d'un nombre en base donnee
-
- @param number une chaine de caracteres representant un nombre entier positif
- en base donne
- @param base   la base (entre 2 et 36)
-
- @return vrai si le nombre est valide, faux sinon.
+ * verification de validite d'un nombre en base donnee
+ * 
+ * @param number une chaine de caracteres representant un nombre entier positif
+ * en base donne
+ * @param base   la base (entre 2 et 36)
+ * 
+ * @return vrai si le nombre est valide, faux sinon.
  */
 bool isValidPositiveInteger(string number) {
   bool isValid = true;
@@ -151,13 +151,13 @@ void swap(string& s1, string& s2) {
 }
 
 /**
- Addition
-
- @param lhs entier >=0 représenté en notation décimale
- @param rhs entier >=0 représenté en notation décimale
- @param base entier entre 2 et 36
-
- @return somme des 2 entiers représentée en notation décimale
+ * Addition
+ * 
+ * @param lhs entier >=0 représenté en notation décimale
+ * @param rhs entier >=0 représenté en notation décimale
+ * @param base entier entre 2 et 36
+ * 
+ * @return somme des 2 entiers représentée en notation décimale
  */
 string add(string lhs, string rhs) {
 
@@ -198,13 +198,13 @@ string add(string lhs, string rhs) {
 
 
 /**
- Multiplication
-
- @param lhs entier >=0 représenté en notation décimale
- @param rhs entier >=0 représenté en notation décimale
- @param base entier entre 2 et 36
-
- @return produit des 2 entiers représenté en notation décimale
+ * Multiplication
+ * 
+ * @param lhs entier >=0 représenté en notation décimale
+ * @param rhs entier >=0 représenté en notation décimale
+ * @param base entier entre 2 et 36
+ * 
+ * @return produit des 2 entiers représenté en notation décimale
  */
 string multiply(string lhs, string rhs) {
 
@@ -247,12 +247,12 @@ string multiply(string lhs, string rhs) {
 }
 
 /**
- Factorielle
-
- @param n entier >=0 représenté en notation décimale
- @param base entier entre 2 et 36
-
- @return n!, la factorielle de n représentée en notation décimale
+ * Factorielle
+ * 
+ * @param n entier >=0 représenté en notation décimale
+ * @param base entier entre 2 et 36
+ * 
+ * @return n!, la factorielle de n représentée en notation décimale
  */
 string factorial(string n) {
 
@@ -268,13 +268,13 @@ string factorial(string n) {
 }
 
 /**
- Soustraction
-
- @param lhs entier >=0 représenté en notation décimale
- @param rhs entier >=0 représenté en notation décimale
- @param base entier entre 2 et 36
-
- @return différence (lhs - rhs) des 2 entiers représentée en notation décimale
+ * Soustraction
+ * 
+ * @param lhs entier >=0 représenté en notation décimale
+ * @param rhs entier >=0 représenté en notation décimale
+ * @param base entier entre 2 et 36
+ * 
+ * @return différence (lhs - rhs) des 2 entiers représentée en notation décimale
  */
 string subtract(string lhs, string rhs) {
 
@@ -343,12 +343,12 @@ void cleanCin(bool withoutFail) {
 }
 
 /**
- Fonction principale
-
- @return Mise en oeuvre d'opérations arithmétiques simples
- (+,-,*) sur des entiers positifs longs représentés
- sous forme de chaines de caractères en notation
- décimale
+ * Fonction principale
+ * 
+ * @return Mise en oeuvre d'opérations arithmétiques simples
+ * (+,-,*) sur des entiers positifs longs représentés
+ * sous forme de chaines de caractères en notation
+ * décimale
  */
 int main() {
 
