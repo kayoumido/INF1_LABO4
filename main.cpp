@@ -28,7 +28,7 @@ const int ZERO_INT_VALUE = ZERO;
 const int A_UPPERCASE_INT_VALUE = 'A';
 const int A_LOWERCASE_INT_VALUE = 'a';
 const int A_INT_DIGIT_VALUE = 10;
-unsigned basis;
+unsigned base;
 
 /**
  * conversion char en entier
@@ -81,17 +81,18 @@ char int2char(int x) {
 /**
  verification de validite d'un nombre en base donnee
 
- @param nombre une chaine de caracteres representant un nombre entier positif
+ @param number une chaine de caracteres representant un nombre entier positif
  en base donne
  @param base   la base (entre 2 et 36)
 
  @return vrai si le nombre est valide, faux sinon.
  */
-bool isValidPositiveInteger(string nombre, unsigned base) {
+bool isValidPositiveInteger(string number, unsigned base) {
   assert(base >= 2 and base <= 36);
   bool isValid = true;
-  for (int i = 0; i < nombre.length(); i++) {
-    if (char2int(nombre[i]) >= base and char2int(nombre[i] < 0)) {
+
+  for (char c : number) {
+    if (char2int(c) >= base or char2int(c) < 0) {
       isValid = false;
       break;
     }
@@ -148,9 +149,9 @@ string removeZeros(string value) {
  * @param carryContainer
  */
 void checkForCarry(int& value, int& carryContainer) {
-  if (value >= basis) {
-    carryContainer = value / basis;
-    value -= carryContainer * basis;
+  if (value >= base) {
+    carryContainer = value / base;
+    value -= carryContainer * base;
   } else {
     carryContainer = 0;
   }
@@ -345,7 +346,7 @@ string subtract(string lhs, string rhs, unsigned base) {
 
     int difference = leftNumber - rightNumber;
     if (difference < 0) {
-      difference += basis;
+      difference += base;
       borrow = true;
     }
 
@@ -357,7 +358,6 @@ string subtract(string lhs, string rhs, unsigned base) {
   return removeZeros(result);
 }
 
-
 /**
  Fonction principale
 
@@ -368,23 +368,37 @@ string subtract(string lhs, string rhs, unsigned base) {
  */
 int main() {
 
-  unsigned base;
-  cout << "Entrez la base \n";
-  cin >> basis;
+  const int MAX_BASE = 36;
+  const int MIN_BASE = 2;
+
+  do {
+    cout << "Entrez la base \n";
+    cin >> base;
+
+    if (cin.fail()) {
+      std::cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      continue;
+    }
+
+  } while (base < MIN_BASE or base > MAX_BASE);
 
   string i1, i2;
-  cout << "Entrez deux entiers >= 0 en base " << basis << endl;
-  cin >> i1 >> i2;
+  do {
+    cout << "1 : Entrez deux entiers >= 0 en base " << base << endl;
+    cin >> i1 >> i2;
 
-  cout << i1 << " + " << i2 << " = " << add(i1,i2,basis) << endl;
-  cout << i1 << " * " << i2 << " = " << multiply(i1,i2,basis) << endl;
-  cout << i1 << " - " << i2 << " = " << subtract(i1,i2,basis) << endl;
+  } while (!isValidPositiveInteger(i1, base) or !isValidPositiveInteger(i2, base));
+
+  cout << i1 << " + " << i2 << " = " << add(i1,i2,base) << endl;
+  cout << i1 << " * " << i2 << " = " << multiply(i1,i2,base) << endl;
+  cout << i1 << " - " << i2 << " = " << subtract(i1,i2,base) << endl;
 
   string i3;
-  cout << "\nEntrez un entier >= 0 en base " << basis << endl;
+  cout << "\nEntrez un entier >= 0 en base " << base << endl;
   cin >> i3;
 
-  cout << "Factoriel(" << i3 << ") = " << factorial(i3,basis) << endl;
+  cout << "Factoriel(" << i3 << ") = " << factorial(i3,base) << endl;
 
   return EXIT_SUCCESS;
 }
