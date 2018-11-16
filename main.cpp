@@ -393,9 +393,7 @@ int main() {
     cleanCin(false);
 
   } while (!isValidPositiveInteger(i3));
-
-
-
+	
   cout << "Factoriel(" << i3 << ") = " << factorial(i3) << endl;
 
   return EXIT_SUCCESS;
